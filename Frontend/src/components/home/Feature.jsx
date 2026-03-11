@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Title from "./Title";
 
-const Feacture = () => {
+const Feature = () => {
   const [isHover, setIsHover] = useState(false);
   return (
     <div
@@ -141,4 +141,4 @@ const Feacture = () => {
     </div>
   );
 };
-export default Feacture;
+export default Feature;

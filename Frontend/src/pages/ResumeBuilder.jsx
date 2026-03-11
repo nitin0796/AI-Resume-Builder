@@ -4,95 +4,178 @@ import { dummyResumeData } from "../assets/assets";
 import {
   ArrowLeftIcon,
   Briefcase,
-  Code,
+  ChevronLeft,
+  ChevronRight,
   FileText,
+  FolderIcon,
   GraduationCap,
   User,
   Wrench,
 } from "lucide-react";
+import PersonalInfo from "../components/PersonalInfo";
+import ResumePreview from "../components/ResumePreview";
+import TemplateSelector from "../components/TemplateSelector";
 
 const ResumeBuilder = () => {
-  const [activeSection, setActiveSection] = useState(0);
+  const [activeSectionIndex, setActiveSectionIndex] = useState(0);
+  const [removeBg, setRemoveBg] = useState(false);
   const [resumeData, setResumeData] = useState({
     _id: "",
     title: "",
-    personalInfo: {},
-    professionalSummary: "",
+    personal_info: {},
+    professional_summary: "",
     experience: [],
     education: [],
     projects: [],
     skills: [],
     template: "classic",
-    accentColor: "#3B82F6",
+    accent_color: "#3B82F6",
     public: false,
   });
 
   const { resumeId } = useParams();
 
-  const loadExistingResume = async () => {
-    const resume = dummyResumeData.find((res) => res._id === resumeId);
-
-    if (resume) {
-      setResumeData(resume);
-      document.title = resume.title;
-    }
-  };
-
   const sections = [
     {
-      id: "personalInfo",
-      title: "Personal Information",
+      id: "personal",
+      name: "Personal Information",
       icon: User,
     },
     {
-      id: "professionalSummary",
-      title: "Professional Summary",
+      id: "summary",
+      name: "Summary",
       icon: FileText,
     },
     {
       id: "experience",
-      title: "Experience",
+      name: "Experience",
       icon: Briefcase,
     },
     {
       id: "education",
-      title: "Education",
+      name: "Education",
       icon: GraduationCap,
     },
     {
       id: "projects",
-      title: "Projects",
-      icon: Code,
+      name: "Projects",
+      icon: FolderIcon,
     },
     {
       id: "skills",
-      title: "Skills",
+      name: "Skills",
       icon: Wrench,
     },
   ];
 
+  const activeSection = sections[activeSectionIndex];
+
   useEffect(() => {
+    const loadExistingResume = async () => {
+      const resume = dummyResumeData.find((resume) => resume._id === resumeId);
+      if (resume) {
+        setResumeData(resume);
+        document.title = resume.title;
+      }
+    };
+
     loadExistingResume();
+
+    return () => {
+      document.title = "ResumeForge";
+    };
   }, [resumeId]);
 
   return (
     <div>
       <div className="max-w-7xl mx-auto px-4 py-6">
         <Link
-          to={"/app"}
-          className="inline-flex gap-2 items-center text-slate-500 hover:text-slate-700 transition-all"
+          to="/app"
+          className="inline-flex items-center gap-2 text-slate-500 hover:text-slate-700 transition-all duration-300"
         >
           <ArrowLeftIcon className="size-4" /> Back to Dashboard
         </Link>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        <div className="grid lg:grid-cols-2 gap-8"></div>
-        {/* Left Side */}
-        <div></div>
-
-        {/* Right Side */}
-        <div></div>
+      <div className="max-w-7xl mx-auto px-4 pb-8">
+        <div className="grid lg:grid-cols-12 gap-8">
+          {/* Left Side panel - Form */}
+          <div className="relative lg:col-span-5 rounded-lg overflow-hidden">
+            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 pt-1">
+              {/* activeSectionIndex progress bar */}
+              <hr className="absolute top-0 left-0 right-0 border-2 border-gray-200" />
+              <hr
+                className="absolute top-0 left-0 h-1 bg-gradient-to-r from-green-500 to-green-600 border-none transition-all duration-200"
+                style={{
+                  width: `${(activeSectionIndex * 100) / (sections.length - 1)}%`,
+                }}
+              />
+              {/* section navigation */}
+              <div className="flex justify-between items-center mb-6 border-b border-gray-300 py-1">
+                <div className="flex items-center gap-2">
+                  <TemplateSelector
+                    selectedTemplate={resumeData.template}
+                    onChange={(template) =>
+                      setResumeData((prev) => ({ ...prev, template }))
+                    }
+                  />
+                </div>
+                <div className="flex items-center">
+                  {activeSectionIndex !== 0 && (
+                    <button
+                      className="flex items-center gap-1 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all"
+                      disabled={activeSectionIndex === 0}
+                      onClick={() =>
+                        setActiveSectionIndex((prev) => Math.max(prev - 1, 0))
+                      }
+                    >
+                      <ChevronLeft className="size-4" /> Previous
+                    </button>
+                  )}
+                  <button
+                    className={`flex items-center gap-1 p-3 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all ${
+                      activeSectionIndex === sections.length - 1 && "opacity-50"
+                    }`}
+                    disabled={activeSectionIndex === sections.length - 1}
+                    onClick={() =>
+                      setActiveSectionIndex((prev) =>
+                        Math.min(prev + 1, sections.length - 1),
+                      )
+                    }
+                  >
+                    Next <ChevronRight className="size-4" />
+                  </button>
+                </div>
+              </div>
+              {/* Form content */}
+              <div className="space-y-6">
+                {activeSection.id === "personal" && (
+                  <PersonalInfo
+                    data={resumeData.personal_info}
+                    onChange={(data) =>
+                      setResumeData((prev) => ({
+                        ...prev,
+                        personal_info: data,
+                      }))
+                    }
+                    removeBg={removeBg}
+                    setRemoveBg={setRemoveBg}
+                  />
+                )}
+              </div>
+            </div>
+          </div>
+          {/* Right Side panel - Preview */}
+          <div className="lg:col-span-7 max-lg:mt-6">
+            <div>{/* Button */}</div>
+            {/* resume preview */}
+            <ResumePreview
+              data={resumeData}
+              template={resumeData.template}
+              accentColor={resumeData.accent_color}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );
