@@ -1,7 +1,11 @@
 import ModernTemplate from "./templates/ModernTemplate";
 import ClassicTemplate from "./templates/ClassicTemplate";
 import MinimalTemplate from "./templates/MinimalTemplate";
-import MinimalImageTemplate from "./templates/MinimalImageTemplate";
+import ClassicPortraitTemplate from "./templates/ClassicPortraitTemplate";
+import DarkSidebarTemplate from "./templates/DarkSidebarTemplate";
+import ClassicFormalTemplate from "./templates/ClassicFormalTemplate";
+import ColorfulBubblyTemplate from "./templates/ColorfulBubblyTemplate";
+import TimeLineProTemplate from "./templates/TimelineProTemplate";
 
 const ResumePreview = ({ data, template, accentColor, classes = "" }) => {
   const renderTemplate = () => {
@@ -10,8 +14,18 @@ const ResumePreview = ({ data, template, accentColor, classes = "" }) => {
         return <ModernTemplate data={data} accentColor={accentColor} />;
       case "minimal":
         return <MinimalTemplate data={data} accentColor={accentColor} />;
-      case "minimal-image":
-        return <MinimalImageTemplate data={data} accentColor={accentColor} />;
+      case "classic-portrait":
+        return (
+          <ClassicPortraitTemplate data={data} accentColor={accentColor} />
+        );
+      case "dark-sidebar":
+        return <DarkSidebarTemplate data={data} accentColor={accentColor} />;
+      case "classic-formal":
+        return <ClassicFormalTemplate data={data} accentColor={accentColor} />;
+      case "colorful-bubbly":
+        return <ColorfulBubblyTemplate data={data} accentColor={accentColor} />;
+      case "timeline-pro":
+        return <TimeLineProTemplate data={data} accentColor={accentColor} />;
       default:
         return <ClassicTemplate data={data} accentColor={accentColor} />;
     }
@@ -28,16 +42,19 @@ const ResumePreview = ({ data, template, accentColor, classes = "" }) => {
       <style jsx>
         {`
           @page {
-            size: letter;
+            size: A4;
             margin: 0;
           }
 
           @media print {
             html,
             body {
-              width: 8.5in;
-              height: 11in;
+              margin: 0 !important;
+              padding: 0 !important;
+              width: 210mm;
+              height: 297mm;
               overflow: hidden;
+              background: white;
             }
 
             body * {
@@ -50,15 +67,21 @@ const ResumePreview = ({ data, template, accentColor, classes = "" }) => {
             }
 
             #resume-preview {
-              position: absolute;
-              left: 0;
+              position: fixed;
               top: 0;
-              width: 100%;
-              height: auto;
+              left: 0;
+              width: 210mm;
+              min-height: 297mm;
               margin: 0;
               padding: 0;
               box-shadow: none !important;
               border: none !important;
+            }
+            @media print {
+              * {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+              }
             }
           }
         `}
