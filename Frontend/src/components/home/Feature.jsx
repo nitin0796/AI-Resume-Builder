@@ -16,19 +16,19 @@ const Feature = () => {
         description="Our AI-powered platform gives you the tools to create a standout professional resume that gets you hired faster."
       />
 
-      <div className="flex flex-col lg:flex-row items-center justify-center mt-24 gap-12 lg:gap-20 px-24 max-w-7xl mb-24 mx-auto w-full">
+      <div className="flex flex-col lg:flex-row items-center justify-center mt-12 lg:mt-24 gap-12 lg:gap-20 px-6 sm:px-12 lg:px-24 max-w-7xl mb-24 mx-auto w-full">
         {/* Image side */}
-        <div className="flex-1 w-full max-w-2xl group relative perspective-1000">
+        <div className="flex-1 w-full max-w-2xl flex justify-center lg:justify-start group relative perspective-1000">
           <img
-            className="relative w-[85%] rounded-2xl shadow-2xl border border-gray-100 bg-white hover:scale-[1.02] transition-transform duration-500 ease-in-out"
+            className="relative w-full sm:w-[85%] rounded-2xl shadow-2xl border border-gray-100 bg-white hover:scale-[1.02] transition-transform duration-500 ease-in-out"
             src="/feature-mockup.png"
             alt="Resume Builder Preview"
           />
         </div>
 
         {/* Features side */}
-        <div className="flex-1 space-y-12 px-2">
-          <div className="flex items-start gap-6 group cursor-pointer hover:-translate-y-1 transition-transform duration-300 ">
+        <div className="flex-1 w-full space-y-10 lg:space-y-12 px-2">
+          <div className="flex items-start gap-4 sm:gap-6 group cursor-pointer hover:-translate-y-1 transition-transform duration-300 ">
             <div className="p-4 bg-violet-50 group-hover:bg-violet-100 rounded-2xl shadow-sm border border-violet-100 transition-colors">
               <Wand2 className="size-8 text-violet-600" />
             </div>
@@ -43,7 +43,7 @@ const Feature = () => {
             </div>
           </div>
 
-          <div className="flex items-start gap-6 group cursor-pointer hover:-translate-y-1 transition-transform duration-300">
+          <div className="flex items-start gap-4 sm:gap-6 group cursor-pointer hover:-translate-y-1 transition-transform duration-300">
             <div className="p-4 bg-green-50 group-hover:bg-green-100 rounded-2xl shadow-sm border border-green-100 transition-colors">
               <LayoutTemplate className="size-8 text-green-600" />
             </div>
@@ -58,7 +58,7 @@ const Feature = () => {
             </div>
           </div>
 
-          <div className="flex items-start gap-6 group cursor-pointer hover:-translate-y-1 transition-transform duration-300">
+          <div className="flex items-start gap-4 sm:gap-6 group cursor-pointer hover:-translate-y-1 transition-transform duration-300">
             <div className="p-4 bg-orange-50 group-hover:bg-orange-100 rounded-2xl shadow-sm border border-orange-100 transition-colors">
               <Share2 className="size-8 text-orange-600" />
             </div>
