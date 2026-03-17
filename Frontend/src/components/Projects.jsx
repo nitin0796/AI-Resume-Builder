@@ -8,7 +8,7 @@ const Projects = ({ data = [], onChange }) => {
       description: "",
       link: "",
     };
-    onChange([...data, newProject]);
+    onChange([...(data || []), newProject]);
   };
 
   const removeProject = (index) => {
@@ -39,7 +39,7 @@ const Projects = ({ data = [], onChange }) => {
         </button>
       </div>
 
-      {data.length === 0 ? (
+      {!data || data.length === 0 ? (
         <div className="text-center py-8 text-gray-500">
           <FolderGit className="w-12 h-12 mx-auto mb-3 text-gray-300" />
           <p>No Projects added yet.</p>
@@ -47,7 +47,7 @@ const Projects = ({ data = [], onChange }) => {
         </div>
       ) : (
         <div className="space-y-4 mt-6">
-          {data.map((project, i) => (
+          {(data || []).map((project, i) => (
             <div
               key={i}
               className="p-4 border border-gray-200 rounded-lg space-y-3"

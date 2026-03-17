@@ -4,11 +4,44 @@ import Layout from "./pages/Layout";
 import Dashboard from "./pages/Dashboard";
 import ResumeBuilder from "./pages/ResumeBuilder";
 import Preview from "./pages/Preview";
-import Login from "./pages/Login";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { login, setLoading } from "./app/features/authSlice";
+import api from "./configs/api";
+import { Toaster } from "react-hot-toast";
 
 const App = () => {
+  const dispatch = useDispatch();
+
+  const getUserData = async () => {
+    const token = localStorage.getItem("token");
+    try {
+      if (token) {
+        const response = await api.get("/api/users/data", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (response.data.user) {
+          dispatch(login({ token, user: response.data.user }));
+        }
+        dispatch(setLoading(false));
+      } else {
+        dispatch(setLoading(false));
+      }
+    } catch (error) {
+      dispatch(setLoading(false));
+      console.log(error.message);
+    }
+  };
+
+  useEffect(() => {
+    getUserData();
+  }, []);
+
   return (
     <>
+      <Toaster />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="app" element={<Layout />}>
@@ -16,7 +49,6 @@ const App = () => {
           <Route path="build/:resumeId" element={<ResumeBuilder />} />
         </Route>
         <Route path="view-resume/:resumeId" element={<Preview />} />
-        <Route path="login" element={<Login />} />
       </Routes>
     </>
   );

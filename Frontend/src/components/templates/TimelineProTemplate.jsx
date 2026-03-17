@@ -211,7 +211,7 @@ const TimeLineProTemplate = ({ data, accentColor }) => {
         )}
 
         {/* Projects */}
-        {data.projects && data.projects.length > 0 && (
+        {data.project && data.project.length > 0 && (
           <section className="mb-10">
             <div className="flex items-center gap-3 mb-6">
               <div
@@ -222,7 +222,7 @@ const TimeLineProTemplate = ({ data, accentColor }) => {
             </div>
 
             <div className="grid md:grid-cols-2 gap-5 pl-5">
-              {data.projects.map((p, index) => (
+              {data.project.map((p, index) => (
                 <div
                   key={index}
                   className="p-5 rounded-xl border-2 hover:shadow-lg transition-shadow"

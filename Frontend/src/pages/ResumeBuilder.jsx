@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { dummyResumeData } from "../assets/assets";
 import {
   ArrowLeftIcon,
   Briefcase,
@@ -8,7 +7,6 @@ import {
   ChevronRight,
   DownloadIcon,
   EyeIcon,
-  EyeOff,
   EyeOffIcon,
   FileText,
   FolderIcon,
@@ -26,8 +24,13 @@ import Experience from "../components/Experience";
 import Education from "../components/Education";
 import Projects from "../components/Projects";
 import Skills from "../components/Skills";
+import { useSelector } from "react-redux";
+import toast from "react-hot-toast";
+import api from "../configs/api";
 
 const ResumeBuilder = () => {
+  const { token } = useSelector((state) => state.auth);
+
   const [activeSectionIndex, setActiveSectionIndex] = useState(0);
   const [removeBg, setRemoveBg] = useState(false);
   const [resumeData, setResumeData] = useState({
@@ -37,7 +40,7 @@ const ResumeBuilder = () => {
     professional_summary: "",
     experience: [],
     education: [],
-    projects: [],
+    project: [],
     skills: [],
     template: "classic",
     accent_color: "#3B82F6",
@@ -82,7 +85,25 @@ const ResumeBuilder = () => {
   const activeSection = sections[activeSectionIndex];
 
   const changeResumeVisibility = async () => {
-    setResumeData((prev) => ({ ...prev, public: !prev.public }));
+    try {
+      const formData = new FormData();
+      formData.append("resumeId", resumeId);
+      formData.append(
+        "resumeData",
+        JSON.stringify({ public: !resumeData.public }),
+      );
+
+      const { data } = await api.put("/api/resumes/update", formData, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (data.resume) {
+        setResumeData((prev) => ({ ...prev, public: data.resume.public }));
+        toast.success(`Resume is now ${data.resume.public ? "Public" : "Private"}`);
+      }
+    } catch (error) {
+      toast.error(error?.response?.data?.message || error.message);
+    }
   };
 
   const handleShare = () => {
@@ -100,12 +121,81 @@ const ResumeBuilder = () => {
     window.print();
   };
 
+  const saveResume = async (e) => {
+    e.preventDefault();
+    try {
+      let resume = structuredClone(resumeData);
+
+      if (typeof resumeData.personal_info.image === "object") {
+        delete resume.personal_info.image;
+      }
+
+      console.log(resumeData);
+
+      const formData = new FormData();
+      formData.append("resumeId", resumeId);
+      formData.append("resumeData", JSON.stringify(resume));
+
+      removeBg && formData.append("removebg", "yes");
+
+      typeof resumeData.personal_info.image === "object" &&
+        formData.append("image", resumeData.personal_info.image);
+
+      const { data } = await api.put("/api/resumes/update", formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      console.log(data);
+
+      setResumeData({
+        ...data.resume,
+        project: data.resume.project || [],
+        skills:
+          (data.resume.skills || [])
+            .flat(Infinity)
+            .map((skill) =>
+              typeof skill === "object" && skill !== null
+                ? skill.title || ""
+                : skill,
+            )
+            .filter(Boolean),
+      });
+      toast.success(data.message);
+    } catch (error) {
+      toast.error(error?.response?.data?.message || error.message);
+    }
+  };
+
   useEffect(() => {
     const loadExistingResume = async () => {
-      const resume = dummyResumeData.find((resume) => resume._id === resumeId);
-      if (resume) {
-        setResumeData(resume);
-        document.title = resume.title;
+      try {
+        const { data } = await api.get(`/api/resumes/get/${resumeId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (data.resume) {
+          setResumeData({
+            ...data.resume,
+            project: data.resume.project || [],
+            skills:
+              (data.resume.skills || [])
+                .flat(Infinity)
+                .map((skill) =>
+                  typeof skill === "object" && skill !== null
+                    ? skill.title || ""
+                    : skill,
+                )
+                .filter(Boolean),
+          });
+
+          document.title = data.resume.title;
+        } else {
+          toast.error("Resume not found");
+        }
+      } catch (error) {
+        toast.error(error?.response?.data?.message || error.message);
       }
     };
 
@@ -140,6 +230,7 @@ const ResumeBuilder = () => {
                   width: `${(activeSectionIndex * 100) / (sections.length - 1)}%`,
                 }}
               />
+
               {/* section navigation */}
               <div className="flex justify-between items-center mb-6 border-b border-gray-300 py-1">
                 <div className="flex items-center gap-2">
@@ -186,8 +277,10 @@ const ResumeBuilder = () => {
                   </button>
                 </div>
               </div>
+
               {/* Form content */}
               <div className="space-y-6">
+                {/* Personal Info */}
                 {activeSection.id === "personal" && (
                   <PersonalInfo
                     data={resumeData.personal_info}
@@ -201,6 +294,8 @@ const ResumeBuilder = () => {
                     setRemoveBg={setRemoveBg}
                   />
                 )}
+
+                {/* Professional Summary */}
                 {activeSection.id === "summary" && (
                   <ProfessionalSummary
                     data={resumeData.professional_summary}
@@ -213,6 +308,8 @@ const ResumeBuilder = () => {
                     setResumeData={setResumeData}
                   />
                 )}
+
+                {/* Experience */}
                 {activeSection.id === "experience" && (
                   <Experience
                     data={resumeData.experience}
@@ -225,6 +322,8 @@ const ResumeBuilder = () => {
                     setResumeData={setResumeData}
                   />
                 )}
+
+                {/* Education */}
                 {activeSection.id === "education" && (
                   <Education
                     data={resumeData.education}
@@ -237,18 +336,22 @@ const ResumeBuilder = () => {
                     setResumeData={setResumeData}
                   />
                 )}
+
+                {/* Projects */}
                 {activeSection.id === "projects" && (
                   <Projects
-                    data={resumeData.projects}
+                    data={resumeData.project}
                     onChange={(data) =>
                       setResumeData((prev) => ({
                         ...prev,
-                        projects: data,
+                        project: data,
                       }))
                     }
                     setResumeData={setResumeData}
                   />
                 )}
+
+                {/* Skills */}
                 {activeSection.id === "skills" && (
                   <Skills
                     data={resumeData.skills}
@@ -262,11 +365,17 @@ const ResumeBuilder = () => {
                   />
                 )}
               </div>
-              <button className="bg-gradient-to-br from-green-100 to-green-200 ring-green-300 text-green-600 ring  hover:ring-green-400 transition-all rounded-md px-6 py-2 mt-6 text-sm">
+              <button
+                onClick={(e) => {
+                  toast.promise(saveResume(e), { loading: "saving..." });
+                }}
+                className="bg-gradient-to-br from-green-100 to-green-200 ring-green-300 text-green-600 ring  hover:ring-green-400 transition-all rounded-md px-6 py-2 mt-6 text-sm"
+              >
                 Save
               </button>
             </div>
           </div>
+
           {/* Right Side panel - Preview */}
           <div className="lg:col-span-7 max-lg:mt-6">
             <div className="relative w-full">

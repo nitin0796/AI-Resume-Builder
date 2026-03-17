@@ -1,45 +1,33 @@
-// import { Sparkles } from "lucide-react";
+import { Loader2, Sparkles } from "lucide-react";
+import { useSelector } from "react-redux";
+import api from "../configs/api";
+import toast from "react-hot-toast";
+import { useState } from "react";
 
-// const ProfessionalSummary = ({ data, onChange, setResumeData }) => {
-//   return (
-//     <div className="space-y-4">
-//       <div className="flex items-center justify-between">
-//         <div>
-//           <h3 className="flex items-center gap-2 text-lg font-semibold text-gray-900">
-//             Professional Summary
-//           </h3>
-//           <p className="text-sm text-gray-500">
-//             Provide a brief summary of your professional background, key skills,
-//             and notable achievements.
-//           </p>
-//         </div>
-//         <button className="flex items-center gap-2 px-3 py-1 text-sm bg-purple-100 text-purple-700 rounded hover:bg-purple-200 transition-colors disabled:opacity-50">
-//           <Sparkles className="size-4" />
-//           AI Enhance
-//         </button>
-//       </div>
+const ProfessionalSummary = ({ data = "", onChange, setResumeData }) => {
+  const { token } = useSelector((state) => state.auth);
 
-//       <div className="mt-6">
-//         <textarea
-//           value={data || ""}
-//           onChange={(e) => onChange(e.target.value)}
-//           rows={7}
-//           className="w-full p-3 px-4 mt-2 border text-sm border-gray-300 rounded-lg focus:ring focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors resize-none"
-//           placeholder="Provide a concise and compelling professional summary that highlights your key strengths, relevant experience, and career objectives, demonstrating the value you bring to potential employers."
-//         />
-//         <p className="text-sm text-gray-500 max-w-[80%] mx-auto text-center mt-2">
-//           Keep it concise and highlight your most relevant skills, achievements,
-//           and the value you bring to the role.
-//         </p>
-//       </div>
-//     </div>
-//   );
-// };
+  const [isAiEnhancing, setIsAiEnhancing] = useState(false);
 
-// export default ProfessionalSummary;
-import { Sparkles } from "lucide-react";
-
-const ProfessionalSummary = ({ data = "", onChange }) => {
+  const handleAiEnhance = async () => {
+    try {
+      setIsAiEnhancing(true);
+      const prompt = `Generate a professional summary for ${data}`;
+      const response = await api.post(
+        "/api/ai/enhance-summary",
+        { userContent: prompt },
+        { headers: { Authorization: `Bearer ${token}` } },
+      );
+      setResumeData((prev) => ({
+        ...prev,
+        professional_summary: response.data.summary,
+      }));
+    } catch (error) {
+      toast.error(error?.response?.data?.message);
+    } finally {
+      setIsAiEnhancing(false);
+    }
+  };
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
@@ -48,24 +36,27 @@ const ProfessionalSummary = ({ data = "", onChange }) => {
             Professional Summary
           </h3>
 
-          <p className="text-sm text-gray-500">
-            Provide a brief summary of your background, key skills, and
-            achievements.
-          </p>
+          <p className="text-sm text-gray-500">Add summary for your resume</p>
         </div>
 
         <button
+          disabled={isAiEnhancing}
+          onClick={handleAiEnhance}
           type="button"
           className="flex items-center gap-2 px-3 py-1 text-sm bg-purple-100 text-purple-700 rounded hover:bg-purple-200 transition-colors"
         >
-          <Sparkles className="size-4" />
-          AI Enhance
+          {isAiEnhancing ? (
+            <Loader2 className="size-4 animate-spin" />
+          ) : (
+            <Sparkles className="size-4" />
+          )}
+          {isAiEnhancing ? "Enhancing..." : "AI Enhance"}
         </button>
       </div>
 
       <div className="mt-6">
         <textarea
-          value={data}
+          value={data || ""}
           onChange={(e) => onChange(e.target.value)}
           rows={6}
           placeholder="Write a short professional summary highlighting your skills and achievements."

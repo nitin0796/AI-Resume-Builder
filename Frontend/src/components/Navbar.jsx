@@ -1,74 +1,44 @@
-// import { Link } from "react-router-dom";
-// import { useNavigate } from "react-router-dom";
-
-// const Navbar = () => {
-//   const user = { name: "John Doe" };
-//   const navigate = useNavigate();
-
-//   const logoutUser = () => {
-//     navigate("/");
-//   };
-//   return (
-//     <div className="shadow bg-white">
-//       <nav className="flex items-center justify-between max-w-7xl mx-auto px-4 py-2 text-slate-800 transition-all">
-//         <Link to="/">
-//           <img src="./logo.png" alt="logo" className="h-11 w-auto" />
-//         </Link>
-//         <div className="flex items-center gap-4 text-sm">
-//           <p className="max-sm:hidden">Hi, {user.name}</p>
-//           <button
-//             onClick={logoutUser}
-//             className="bg-white hover:bg-slate-50 border border-gray-300 px-7 py-1.5 rounded-full active:scale-95 transition-all"
-//           >
-//             Logout
-//           </button>
-//         </div>
-//       </nav>
-//     </div>
-//   );
-// };
-
-// export default Navbar;
-
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { LogOut, User, FileText, Settings } from "lucide-react";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../app/features/authSlice";
 
 const Navbar = () => {
-  const user = { name: "John Doe", email: "john@example.com" };
+  const { user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
   const navigate = useNavigate();
   const [showDropdown, setShowDropdown] = useState(false);
 
   const logoutUser = () => {
     navigate("/");
+    dispatch(logout());
   };
 
   return (
     <div className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
       <nav className="flex items-center justify-between max-w-7xl mx-auto px-4 py-3">
         {/* Logo */}
-        <Link
-          to="/app"
-          className="flex items-center gap-3 hover:opacity-80 transition-opacity"
-        >
-          <div className="flex items-center gap-2">
-            <Link to="/app">
-              <img
-                src="./logo.png"
-                alt="ResumeForge Logo"
-                className="h-12 md:h-14"
-              />
-            </Link>
-          </div>
-        </Link>
+        <div className="flex items-center gap-2">
+          <Link to="/">
+            <img
+              src="/logo.png"
+              alt="ResumeForge Logo"
+              className="h-12 md:h-14"
+            />
+          </Link>
+        </div>
 
         {/* Right Section */}
         <div className="flex items-center gap-4">
           {/* User Info - Desktop */}
           <div className="hidden md:flex items-center gap-3">
             <div className="text-right">
-              <p className="text-sm font-medium text-gray-900">{user.name}</p>
+              <p className="text-sm font-medium text-gray-900">
+                {user.name.split(" ")[0]}
+              </p>
               <p className="text-xs text-gray-500">{user.email}</p>
             </div>
             <div className="w-10 h-10 rounded-full bg-gradient-to-br from-green-50 to-green-500 flex items-center justify-center text-white font-semibold shadow-md">

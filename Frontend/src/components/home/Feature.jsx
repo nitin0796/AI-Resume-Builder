@@ -1,147 +1,79 @@
-import { useState } from "react";
+import { Wand2, LayoutTemplate, Share2, Sparkles } from "lucide-react";
 import Title from "./Title";
 
 const Feature = () => {
-  const [isHover, setIsHover] = useState(false);
   return (
     <div
       id="features"
-      className="flex flex-col items-center my-10 scroll-mt-12"
+      className="flex flex-col items-center my-10 scroll-mt-24 px-4 sm:px-6 lg:px-16"
     >
-      <div className="flex items-center gap-2 text-sm text-green-600 bg-green-400/10 border border-green-200 rounded-full px-6 py-1.5">
-        <svg
-          width="13"
-          height="14"
-          viewBox="0 0 13 14"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M1.613 8.2a.62.62 0 0 1-.553-.341.59.59 0 0 1 .076-.637l6.048-6.118a.31.31 0 0 1 .375-.069c.061.033.11.084.137.147a.3.3 0 0 1 .014.197L6.537 4.991a.59.59 0 0 0 .07.552.61.61 0 0 0 .504.257h4.276a.62.62 0 0 1 .553.341.59.59 0 0 1-.076.637l-6.048 6.119a.31.31 0 0 1-.375.067.295.295 0 0 1-.15-.344l1.172-3.61a.59.59 0 0 0-.07-.553.61.61 0 0 0-.504-.257z"
-            stroke="#008E38"
-            strokeMiterlimit="5.759"
-            strokeLinecap="round"
-          />
-        </svg>
-        <span>Simple Process</span>
+      <div className="flex items-center gap-2 text-sm text-green-700 font-normal bg-green-100 border border-green-200 rounded-full px-6 py-1.5 mb-6 shadow-sm">
+        <Sparkles className="size-4 text-green-600" />
+        <span>Powerful Features</span>
       </div>
       <Title
-        title="Build Your Resume in Minutes"
-        description="AI-powered resume builder that helps you create a professional resume in minutes."
+        title="Everything you need for a perfect resume"
+        description="Our AI-powered platform gives you the tools to create a standout professional resume that gets you hired faster."
       />
 
-      <div className="flex flex-col md:flex-row items-center mt-[-50px]">
-        <img
-          className="max-w-2xl w-full"
-          src="https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/features/card-image-1.png"
-          alt=""
-        />
-        <div className="space-y-10 px-4 md:px-0">
-          <div className="flex items-center justify-center gap-6 max-w-md">
-            <div className="p-6 aspect-square bg-violet-100 rounded-full">
-              <svg
-                width="28"
-                height="28"
-                viewBox="0 0 28 28"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M14 18.667V24.5m4.668-8.167V24.5m4.664-12.833V24.5m2.333-21L15.578 13.587a.584.584 0 0 1-.826 0l-3.84-3.84a.583.583 0 0 0-.825 0L2.332 17.5M4.668 21v3.5m4.664-8.167V24.5"
-                  stroke="#7F22FE"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
+      <div className="flex flex-col lg:flex-row items-center justify-center mt-24 gap-12 lg:gap-20 max-w-7xl mb-24 mx-auto w-full">
+        {/* Image side */}
+        <div className="flex-1 w-full max-w-2xl group relative perspective-1000">
+          <img
+            className="relative w-[85%] rounded-2xl shadow-2xl border border-gray-100 bg-white hover:scale-[1.02] transition-transform duration-500 ease-in-out"
+            src="/feature-mockup.png"
+            alt="Resume Builder Preview"
+          />
+        </div>
+
+        {/* Features side */}
+        <div className="flex-1 space-y-12 px-2">
+          <div className="flex items-start gap-6 group cursor-pointer hover:-translate-y-1 transition-transform duration-300 ">
+            <div className="p-4 bg-violet-50 group-hover:bg-violet-100 rounded-2xl shadow-sm border border-violet-100 transition-colors">
+              <Wand2 className="size-8 text-violet-600" />
             </div>
-            <div className="space-y-2">
-              <h3 className="text-base font-semibold text-slate-700">
-                Real-Time Analytics
+            <div className="space-y-2 mt-1">
+              <h3 className="text-xl font-normal text-slate-800">
+                AI-Powered Writing
               </h3>
-              <p className="text-sm text-slate-600">
-                Get instant insights into your finances with live dashboards.
+              <p className="text-base text-slate-600 leading-relaxed font-normal">
+                Generate professional summaries, tailor your job descriptions,
+                and fix grammar instantly using our advanced AI engine.
               </p>
             </div>
           </div>
-          <div className="flex items-center justify-center gap-6 max-w-md">
-            <div className="p-6 aspect-square bg-green-100 rounded-full">
-              <svg
-                width="28"
-                height="28"
-                viewBox="0 0 28 28"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M14 11.667A2.333 2.333 0 0 0 11.667 14c0 1.19-.117 2.929-.304 4.667m4.972-3.36c0 2.776 0 7.443-1.167 10.36m5.004-1.144c.14-.7.502-2.683.583-3.523M2.332 14a11.667 11.667 0 0 1 21-7m-21 11.667h.01m23.092 0c.233-2.333.152-6.246 0-7"
-                  stroke="#00A63E"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M5.832 22.75C6.415 21 6.999 17.5 6.999 14a7 7 0 0 1 .396-2.333m2.695 13.999c.245-.77.525-1.54.665-2.333m-.255-15.4A7 7 0 0 1 21 14v2.333"
-                  stroke="#00A63E"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
+
+          <div className="flex items-start gap-6 group cursor-pointer hover:-translate-y-1 transition-transform duration-300">
+            <div className="p-4 bg-green-50 group-hover:bg-green-100 rounded-2xl shadow-sm border border-green-100 transition-colors">
+              <LayoutTemplate className="size-8 text-green-600" />
             </div>
-            <div className="space-y-2">
-              <h3 className="text-base font-semibold text-slate-700">
-                Bank-Grade Security
+            <div className="space-y-2 mt-1">
+              <h3 className="text-xl font-normal text-slate-800">
+                Premium Templates
               </h3>
-              <p className="text-sm text-slate-600">
-                End-to-end encryption, 2FA, compliance with GDPR standards.
+              <p className="text-base text-slate-600 leading-relaxed font-normal">
+                Choose from dozens of beautifully designed, ATS-friendly
+                templates that grab recruiters' attention instantly.
               </p>
             </div>
           </div>
-          <div className="flex items-center justify-center gap-6 max-w-md">
-            <div className="p-6 aspect-square bg-orange-100 rounded-full">
-              <svg
-                width="28"
-                height="28"
-                viewBox="0 0 28 28"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M4.668 25.666h16.333a2.333 2.333 0 0 0 2.334-2.333V8.166L17.5 2.333H7a2.333 2.333 0 0 0-2.333 2.333v4.667"
-                  stroke="#F54900"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M16.332 2.333V7a2.334 2.334 0 0 0 2.333 2.333h4.667m-21 8.167h11.667M10.5 21l3.5-3.5-3.5-3.5"
-                  stroke="#F54900"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
+
+          <div className="flex items-start gap-6 group cursor-pointer hover:-translate-y-1 transition-transform duration-300">
+            <div className="p-4 bg-orange-50 group-hover:bg-orange-100 rounded-2xl shadow-sm border border-orange-100 transition-colors">
+              <Share2 className="size-8 text-orange-600" />
             </div>
-            <div className="space-y-2">
-              <h3 className="text-base font-semibold text-slate-700">
-                Customizable Reports
+            <div className="space-y-2 mt-1">
+              <h3 className="text-xl font-normal text-slate-800">
+                Easy Export & Share
               </h3>
-              <p className="text-sm text-slate-600">
-                Export professional, audit-ready financial reports for tax or
-                internal review.
+              <p className="text-base text-slate-600 leading-relaxed font-normal">
+                Download your resume as a pixel-perfect PDF or share it with a
+                live public link in just one click.
               </p>
             </div>
           </div>
         </div>
       </div>
-      <style>{`
-                @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-            
-                * {
-                    font-family: 'Poppins', sans-serif;
-                }
-            `}</style>
     </div>
   );
 };

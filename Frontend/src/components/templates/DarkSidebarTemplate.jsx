@@ -266,13 +266,13 @@ const DarkSidebarTemplate = ({ data, accentColor }) => {
         )}
 
         {/* Projects */}
-        {data.projects && data.projects.length > 0 && (
+        {data.project && data.project.length > 0 && (
           <section className="mb-8">
             <h2 className="text-xs tracking-widest uppercase font-bold mb-5 text-gray-400">
               Projects
             </h2>
             <div className="space-y-5">
-              {data.projects.map((proj, index) => (
+              {data.project.map((proj, index) => (
                 <div
                   key={index}
                   className="p-4 rounded-lg bg-gray-50 border border-gray-100"

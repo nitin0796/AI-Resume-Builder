@@ -222,7 +222,7 @@ const ColorfulBubblyTemplate = ({ data, accentColor }) => {
         </div>
 
         {/* Projects */}
-        {data.projects && data.projects.length > 0 && (
+        {data.project && data.project.length > 0 && (
           <section>
             <div className="flex items-center gap-2 mb-5">
               <span className="w-3 h-3 rounded-full" style={{ backgroundColor: accent }} />
@@ -231,7 +231,7 @@ const ColorfulBubblyTemplate = ({ data, accentColor }) => {
               </h2>
             </div>
             <div className="grid grid-cols-2 gap-4">
-              {data.projects.map((proj, index) => (
+              {data.project.map((proj, index) => (
                 <div
                   key={index}
                   className="p-4 rounded-2xl border-2"

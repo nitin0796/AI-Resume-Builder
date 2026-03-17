@@ -191,11 +191,11 @@ const ClassicFormalTemplate = ({ data, accentColor }) => {
         </div>
 
         {/* Projects */}
-        {data.projects && data.projects.length > 0 && (
+        {data.project && data.project.length > 0 && (
           <section className="mt-8">
             <SectionTitle>Projects</SectionTitle>
             <div className="space-y-4">
-              {data.projects.map((proj, index) => (
+              {data.project.map((proj, index) => (
                 <div key={index} className="flex gap-4">
                   <div
                     className="w-1 rounded-full flex-shrink-0 self-stretch"

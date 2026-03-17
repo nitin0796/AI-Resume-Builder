@@ -111,7 +111,7 @@ const ClassicTemplate = ({ data, accentColor }) => {
       )}
 
       {/* Projects */}
-      {data.projects && data.projects.length > 0 && (
+      {data.project && data.project.length > 0 && (
         <section className="mb-6">
           <h2
             className="text-xl font-semibold mb-4"
@@ -120,7 +120,7 @@ const ClassicTemplate = ({ data, accentColor }) => {
             PROJECTS
           </h2>
           <div className="space-y-3">
-            {data.projects.map((proj, index) => (
+            {data.project.map((proj, index) => (
               <div key={index} className="border-l-3 border-gray-300 pl-6">
                 <div className="flex items-center gap-2 flex-wrap">
                   <h3 className="font-semibold text-gray-800">{proj.name}</h3>
@@ -144,7 +144,7 @@ const ClassicTemplate = ({ data, accentColor }) => {
                   )}
                 </div>
                 {proj.description && (
-                  <p className="text-gray-600 mt-1">{proj.description}</p>
+                  <p className="text-gray-600 mt-1 whitespace-pre-line">{proj.description}</p>
                 )}
               </div>
             ))}

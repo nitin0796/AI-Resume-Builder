@@ -168,7 +168,7 @@ const ClassicPortraitTemplate = ({ data, accentColor }) => {
           )}
 
           {/* Projects */}
-          {data.projects && data.projects.length > 0 && (
+          {data.project && data.project.length > 0 && (
             <section>
               <h2
                 className="text-sm uppercase tracking-widest font-semibold"
@@ -177,7 +177,7 @@ const ClassicPortraitTemplate = ({ data, accentColor }) => {
                 PROJECTS
               </h2>
               <div className="space-y-4">
-                {data.projects.map((project, index) => (
+                {data.project.map((project, index) => (
                   <div key={index}>
                     <div className="flex items-center justify-between">
                       <h3 className="text-md font-medium text-zinc-800 mt-3">

@@ -19,14 +19,14 @@ const PersonalInfo = ({ data = {}, onChange, removeBg, setRemoveBg }) => {
       label: "Full Name",
       icon: User,
       type: "text",
-      required: "true",
+      required: true,
     },
     {
       key: "email",
       label: "Email Address",
       icon: Mail,
       type: "email",
-      required: "true",
+      required: true,
     },
     {
       key: "phone",
@@ -59,6 +59,7 @@ const PersonalInfo = ({ data = {}, onChange, removeBg, setRemoveBg }) => {
       type: "url",
     },
   ];
+
   return (
     <div>
       <h3 className="text-lg font-semibold text-gray-900">

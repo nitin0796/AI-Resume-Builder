@@ -2,11 +2,17 @@ import { useState } from "react";
 import { User2Icon } from "lucide-react";
 import { MailIcon } from "lucide-react";
 import { LockIcon } from "lucide-react";
+import api from "../configs/api";
+import { useDispatch } from "react-redux";
+import { login } from "../app/features/authSlice";
+import toast from "react-hot-toast";
 
 const Login = () => {
   const query = new URLSearchParams(window.location.search);
-  const urlState = query.get("query");
+  const urlState = query.get("state");
   const [state, setState] = useState(urlState || "login");
+
+  const dispatch = useDispatch();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -16,6 +22,15 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    try {
+      const { data } = await api.post(`/api/users/${state}`, formData);
+      dispatch(login(data));
+      localStorage.setItem("token", data.token);
+      toast.success("Login successful");
+    } catch (error) {
+      toast(error?.response?.data?.message || error.message);
+    }
   };
 
   const handleChange = (e) => {
@@ -92,7 +107,7 @@ const Login = () => {
         >
           {state === "login"
             ? "Don't have an account?"
-            : "Already have an account?"}{" "}
+            : "Already have an account?"}
           <a href="#" className="text-green-500 hover:underline">
             click here
           </a>
