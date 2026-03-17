@@ -16,7 +16,7 @@ const Feature = () => {
         description="Our AI-powered platform gives you the tools to create a standout professional resume that gets you hired faster."
       />
 
-      <div className="flex flex-col lg:flex-row items-center justify-center mt-24 gap-12 lg:gap-20 max-w-7xl mb-24 mx-auto w-full">
+      <div className="flex flex-col lg:flex-row items-center justify-center mt-24 gap-12 lg:gap-20 px-24 max-w-7xl mb-24 mx-auto w-full">
         {/* Image side */}
         <div className="flex-1 w-full max-w-2xl group relative perspective-1000">
           <img

@@ -98,7 +98,10 @@ export const updateResume = async (req, res) => {
       resumeDataCopy = structuredClone(resumeData);
     }
 
-    console.log("Req.file:", image);
+    if (image) {
+      console.log("New image file received:", image.originalname);
+    }
+
     if (image) {
       const bufferData = fs.createReadStream(image.path);
 
@@ -151,7 +154,7 @@ export const updateResume = async (req, res) => {
     const resume = await ResumeModel.findOneAndUpdate(
       { userId, _id: resumeId },
       resumeDataCopy,
-      { new: true },
+      { returnDocument: "after" },
     );
 
     if (!resume) {
